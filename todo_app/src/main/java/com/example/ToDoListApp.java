@@ -162,6 +162,7 @@ public class ToDoListApp {
         System.out.println("                 |||||");
         System.out.println("                 |||||");
         System.out.println("========================================" + RESET);
+        pause(); // Pause to allow the user to view the header
     }
 
     /**
