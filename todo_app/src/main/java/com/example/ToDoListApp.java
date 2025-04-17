@@ -86,6 +86,16 @@ class Task {
 public class ToDoListApp {
 
     /**
+     * ANSI escape codes for colors.
+     */
+    private static final String RESET = "\u001B[0m";
+    private static final String RED = "\u001B[31m";
+    private static final String GREEN = "\u001B[32m";
+    private static final String YELLOW = "\u001B[33m";
+    private static final String BLUE = "\u001B[34m";
+    private static final String CYAN = "\u001B[36m";
+
+    /**
      * A static list to store all tasks created by the user.
      */
     private static ArrayList<Task> tasks = new ArrayList<>();
@@ -101,7 +111,7 @@ public class ToDoListApp {
      * @param args Command-line arguments (not used).
      */
     public static void main(String[] args) {
-        System.out.println("Welcome to the To-Do List App!");
+        displayHeader();
         while (true) {
             clearTerminal();
             displayMenu();
@@ -127,15 +137,31 @@ public class ToDoListApp {
                     break;
                 case 5:
                     clearTerminal();
-                    System.out.println("Exiting...");
+                    System.out.println(GREEN + "Exiting... Goodbye!" + RESET);
                     return;
                 default:
                     clearTerminal();
-                    System.out.println("Invalid choice. Try again.");
+                    System.out.println(RED + "Invalid choice. Try again." + RESET);
                     pause();
                     break;
             }
         }
+    }
+
+    /**
+     * Displays a colorful header with a wolf-style ASCII art decoration.
+     */
+    private static void displayHeader() {
+        System.out.println(CYAN + "========================================");
+        System.out.println("              TO-DO LIST APP");
+        System.out.println("========================================");
+        System.out.println("               /\\     /\\");
+        System.out.println("              {  `---'  }");
+        System.out.println("              {  O   O  }");
+        System.out.println("~~ WOLF ~~     ~~\\  ^  /~~");
+        System.out.println("                 |||||");
+        System.out.println("                 |||||");
+        System.out.println("========================================" + RESET);
     }
 
     /**
@@ -159,7 +185,7 @@ public class ToDoListApp {
      * Pauses the application and waits for the user to press Enter before continuing.
      */
     private static void pause() {
-        System.out.println("Press Enter to continue...");
+        System.out.println(YELLOW + "Press Enter to continue..." + RESET);
         scanner.nextLine();
     }
 
@@ -167,25 +193,25 @@ public class ToDoListApp {
      * Displays the main menu of the to-do list application.
      */
     private static void displayMenu() {
-        System.out.println("\nTo-Do List Menu:");
+        System.out.println(BLUE + "\nTo-Do List Menu:");
         System.out.println("1. Add Task");
         System.out.println("2. View Tasks");
         System.out.println("3. Update Task");
         System.out.println("4. Delete Task");
-        System.out.println("5. Exit");
-        System.out.print("Enter choice: ");
+        System.out.println("5. Exit" + RESET);
+        System.out.print(CYAN + "Enter choice: " + RESET);
     }
 
     /**
      * Adds a new task to the to-do list.
      */
     private static void addTask() {
-        System.out.print("Enter task title: ");
+        System.out.print(CYAN + "Enter task title: " + RESET);
         String title = scanner.nextLine();
-        System.out.print("Enter task description: ");
+        System.out.print(CYAN + "Enter task description: " + RESET);
         String description = scanner.nextLine();
         tasks.add(new Task(title, description));
-        System.out.println("Task added successfully!");
+        System.out.println(GREEN + "Task added successfully!" + RESET);
         pause();
     }
 
@@ -195,12 +221,13 @@ public class ToDoListApp {
      */
     private static void viewTasks() {
         if (tasks.isEmpty()) {
-            System.out.println("No tasks available.");
+            System.out.println(RED + "No tasks available." + RESET);
             pause();
             return;
         }
+        System.out.println(YELLOW + "Your Tasks:" + RESET);
         for (int i = 0; i < tasks.size(); i++) {
-            System.out.println((i + 1) + ". " + tasks.get(i));
+            System.out.println(CYAN + (i + 1) + ". " + tasks.get(i) + RESET);
         }
         pause();
     }
@@ -212,24 +239,24 @@ public class ToDoListApp {
     private static void updateTask() {
         viewTasks();
         if (tasks.isEmpty()) return;
-        System.out.print("Enter task number to update: ");
+        System.out.print(CYAN + "Enter task number to update: " + RESET);
         int index = scanner.nextInt() - 1;
         scanner.nextLine(); // Consume newline
 
         if (index >= 0 && index < tasks.size()) {
-            System.out.print("New description (leave blank to keep current): ");
+            System.out.print(CYAN + "New description (leave blank to keep current): " + RESET);
             String description = scanner.nextLine();
 
             if (!description.isEmpty()) {
                 tasks.get(index).setDescription(description);
             }
-            System.out.print("Mark as completed? (y/n): ");
+            System.out.print(CYAN + "Mark as completed? (y/n): " + RESET);
             String choice = scanner.nextLine();
             tasks.get(index).setCompleted(choice.equalsIgnoreCase("y"));
-            System.out.println("Task updated!");
+            System.out.println(GREEN + "Task updated!" + RESET);
             pause();
         } else {
-            System.out.println("Invalid task number.");
+            System.out.println(RED + "Invalid task number." + RESET);
             pause();
         }
     }
@@ -240,16 +267,16 @@ public class ToDoListApp {
     private static void deleteTask() {
         viewTasks();
         if (tasks.isEmpty()) return;
-        System.out.print("Enter task number to delete: ");
+        System.out.print(CYAN + "Enter task number to delete: " + RESET);
         int index = scanner.nextInt() - 1;
         scanner.nextLine(); // Consume newline
 
         if (index >= 0 && index < tasks.size()) {
             tasks.remove(index);
-            System.out.println("Task deleted!");
+            System.out.println(GREEN + "Task deleted!" + RESET);
             pause();
         } else {
-            System.out.println("Invalid task number.");
+            System.out.println(RED + "Invalid task number." + RESET);
             pause();
         }
     }
